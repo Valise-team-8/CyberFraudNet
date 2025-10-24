@@ -5,7 +5,7 @@
 ![CYBERFRAUDNET](https://img.shields.io/badge/CYBERFRAUDNET-AI%20Fraud%20Detection-00f5ff?style=for-the-badge&logo=shield&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.8+-ff00ff?style=for-the-badge&logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Neural%20Networks-00ff00?style=for-the-badge&logo=pytorch&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-ffff00?style=for-the-badge&logo=streamlit&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-Dashboard-ffff00?style=for-the-badge&logo=flask&logoColor=white)
 
 **⚡ Advanced AI-Powered Fraud Detection using Graph Neural Networks ⚡**
 
@@ -33,16 +33,16 @@ CYBERFRAUDNET is a state-of-the-art fraud detection system that combines:
 - **Real-time Processing**: Instant fraud risk assessment
 
 ### 📊 **Performance Metrics**
-- **95.6% Accuracy**: Industry-leading fraud detection accuracy
-- **98.7% Precision**: Minimal false positives
-- **77.2% AUC**: Excellent model discrimination
-- **151,112 Transactions**: Processed from real-world datasets
+- **90.7% Accuracy**: High-performance fraud detection
+- **77.0% AUC**: Excellent model discrimination  
+- **50,000 Training Samples**: Optimized subset for efficient training
+- **151,112 Total Records**: Full dataset available for scaling
 
-### 🎨 **Futuristic Dashboard**
+### 🎨 **Flask Dashboard**
 - **Cyberpunk UI**: Neon-styled interface with glowing effects
 - **Interactive Visualizations**: Plotly-powered charts and graphs
-- **Real-time Monitoring**: Live system status and performance metrics
-- **Network Analysis**: Visual transaction relationship mapping
+- **Flexible CSV Upload**: Accepts any column format with auto-mapping
+- **Real-time Fraud Detection**: Live analysis and risk assessment
 
 ## 🏗️ **Architecture**
 
@@ -55,7 +55,7 @@ Raw Datasets → Data Cleaning → BERT + Numerical → Network Graph → Tempor
 ### 🔧 **Technical Stack**
 - **Backend**: Python 3.8+, PyTorch, PyTorch Geometric
 - **ML Models**: BERT, Graph Neural Networks, Contrastive Learning
-- **Frontend**: Streamlit with custom CSS styling
+- **Frontend**: Flask with Bootstrap 5 and custom cyberpunk CSS
 - **Visualization**: Plotly, Matplotlib, NetworkX
 - **Data Processing**: Pandas, NumPy, Scikit-learn
 
@@ -75,8 +75,9 @@ CYBERFRAUDNET/
 │   ├── contrastive_learning.py # Model training
 │   ├── evaluation.py         # Performance metrics
 │   └── explainability.py     # Model interpretability
-├── 🎨 demo_app/
-│   └── app.py                # Futuristic Streamlit dashboard
+├── 🎨 flask_app/
+│   ├── app.py                # Flask backend with REST API
+│   └── templates/            # Cyberpunk HTML templates
 ├── 📈 outputs/               # Generated results and visualizations
 ├── ⚙️ utils/                 # Configuration and utilities
 └── 📋 requirements.txt       # Python dependencies
@@ -102,11 +103,11 @@ python main.py
 
 ### 3️⃣ **Launch Dashboard**
 ```bash
-# Start the futuristic dashboard
-python -m streamlit run demo_app/app.py
+# Start the cyberpunk Flask dashboard
+python flask_app/app.py
 
 # Or use the launcher
-python launch_dashboard.py
+python launch_flask_dashboard.py
 ```
 
 ### 4️⃣ **View Results**
@@ -126,89 +127,95 @@ The system processes multiple real-world fraud datasets:
 | **Transaction_Details.csv** | 10,000+ | 10 | Detailed transaction records |
 | **Financial_Anomaly.csv** | 50,000+ | 7 | Financial anomaly patterns |
 | **IP_Country.csv** | 100,000+ | 3 | IP geolocation mapping |
+| **Combined Dataset** | 151,112 | 14 | Processed unified dataset |
+| **Training Subset** | 50,000 | 14 | Optimized for efficient training |
 
 ## 🎯 **Model Performance**
 
 | Metric | Score | Description |
 |--------|-------|-------------|
-| **Accuracy** | 95.6% | Overall prediction accuracy |
-| **Precision** | 98.7% | Fraud detection precision |
-| **Recall** | 53.7% | Fraud case coverage |
-| **AUC** | 77.2% | Area under ROC curve |
-| **F1-Score** | 70.0% | Balanced performance metric |
+| **Accuracy** | 90.7% | Overall prediction accuracy |
+| **AUC** | 77.0% | Area under ROC curve |
+| **Training Time** | 14.6 min | Optimized CPU training |
+| **Dataset Size** | 50K samples | Efficient training subset |
+| **Model Size** | 99K params | Lightweight architecture |
 
 ## 🎨 **Dashboard Features**
 
 ### 🎯 **Model Results Page**
 ```python
-# Performance Metrics Display
-col1, col2, col3, col4 = st.columns(4)
-with col1:
-    st.markdown(f"""
-    <div class="metric-card">
-        <h3 style="color: #00ff00;">🎯 ACCURACY</h3>
-        <h1 style="color: #ffffff;">{accuracy}</h1>
-    </div>
-    """, unsafe_allow_html=True)
+# Flask Route with Performance Metrics
+@app.route('/model-results')
+def model_results():
+    metrics, full_report = load_metrics()
+    images = load_visualization_images()
+    return render_template('model_results.html', 
+                         metrics=metrics, images=images)
 ```
-- **Futuristic Metric Cards**: Neon-styled performance indicators
-- **Interactive Confusion Matrix**: Clickable heatmap visualization
-- **ROC Curve Analysis**: Dynamic performance curve
-- **Probability Distributions**: Fraud vs normal pattern analysis
+- **Cyberpunk Metric Cards**: Neon-styled performance indicators
+- **Base64 Image Display**: Embedded confusion matrix and ROC curves
+- **Detailed Reports**: Expandable classification reports
+- **Real-time Loading**: Dynamic metrics from trained model
 
 ### 📊 **Data Analysis Page**
 ```python
-# Interactive Plotly Visualizations
-fig = go.Figure(data=[go.Pie(
-    labels=['Normal', 'Fraud'],
-    values=fraud_counts.values,
-    hole=0.4,
-    marker_colors=['#00f5ff', '#ff0000']
-)])
-st.plotly_chart(fig, use_container_width=True)
+# Flask Route with Interactive Plotly Charts
+@app.route('/data-analysis')
+def data_analysis():
+    df = load_processed_data()
+    pie_fig = create_fraud_distribution_chart(df)
+    hist_fig = create_purchase_value_analysis(df)
+    return render_template('data_analysis.html', 
+                         pie_chart=pie_json, hist_chart=hist_json)
 ```
-- **Dataset Statistics**: Real-time data insights
-- **Interactive Charts**: Plotly-powered visualizations
-- **Fraud Distribution**: Pie charts and histograms
-- **Purchase Analysis**: Value distribution by fraud status
-- **Age Demographics**: Box plots and statistical analysis
+- **Interactive Plotly Charts**: Client-side rendered visualizations
+- **Real-time Filtering**: JavaScript-powered data filtering
+- **Responsive Design**: Bootstrap grid with cyberpunk styling
+- **Statistical Overview**: Dataset metrics and fraud rate analysis
 
 ### 🔍 **Live Prediction Page**
 ```python
-# Network Analysis
-G = nx.Graph()
-for _, row in sample_df.iterrows():
-    user = f"U_{row['user_id']}"
-    product = f"P_{row['product_id']}"
-    seller = f"S_{row['seller_id']}"
-    G.add_edge(user, product)
-    G.add_edge(product, seller)
-
-# AI Risk Assessment
-if st.button("🔍 Run AI Fraud Detection"):
-    fraud_probability = model.predict(features)
-    risk_score = calculate_risk_score(fraud_probability)
+# Flask API for CSV Upload with Flexible Column Mapping
+@app.route('/upload-csv', methods=['POST'])
+def upload_csv():
+    df = pd.read_csv(request.files['file'])
+    
+    # Auto-detect and map columns
+    column_mapping = auto_detect_columns(df)
+    df = df.rename(columns=column_mapping)
+    
+    # Generate network analysis and fraud prediction
+    network_stats = analyze_network_topology(df)
+    fraud_analysis = run_ai_fraud_detection(df)
+    
+    return jsonify({
+        'success': True,
+        'network_stats': network_stats,
+        'fraud_analysis': fraud_analysis
+    })
 ```
-- **CSV Upload Portal**: Drag-and-drop file analysis
-- **Network Topology**: Interactive graph visualization
-- **AI Risk Assessment**: Real-time fraud probability calculation
-- **Transaction Mapping**: User-Product-Seller relationship analysis
+- **Flexible CSV Upload**: Accepts any column format with auto-mapping
+- **Smart Column Detection**: Automatically finds user/product/seller columns
+- **AJAX Processing**: Real-time file upload with progress indicators
+- **Network Analysis**: Dynamic graph topology visualization
 
 ### ⚙️ **System Status Page**
 ```python
-# Real-time System Monitoring
-st.markdown(f"""
-<div class="status-card">
-    <h4 style="color: #00ff00;">🟢 NEURAL NETWORK</h4>
-    <h3 style="color: #ffffff;">ONLINE</h3>
-    <p style="color: #00f5ff;">TemporalGNN Active</p>
-</div>
-""", unsafe_allow_html=True)
+# Flask Route with Real-time System Monitoring
+@app.route('/system-status')
+def system_status():
+    system_info = {
+        'uptime': get_system_uptime(),
+        'processed': get_processed_count(),
+        'accuracy': get_model_accuracy(),
+        'current_time': get_current_time()
+    }
+    return render_template('system_status.html', system_info=system_info)
 ```
-- **System Health**: Neural network status monitoring
-- **Model Architecture**: Component overview and status
-- **Performance Metrics**: Real-time processing statistics
-- **Uptime Tracking**: System availability monitoring
+- **Live System Metrics**: Real-time JavaScript updates
+- **Model Architecture Table**: Component status overview
+- **Performance Monitoring**: Memory and processing statistics
+- **Interactive Elements**: Animated progress bars and indicators
 
 ### 🎨 **UI Components Showcase**
 
@@ -218,17 +225,17 @@ st.markdown(f"""
 - **Glass Morphism**: Translucent cards with backdrop blur
 - **Animated Elements**: Pulsing indicators and smooth transitions
 
-#### **Interactive Elements**
-- **Hover Effects**: Dynamic color changes and shadows
-- **Click Animations**: Button press feedback
-- **Loading Spinners**: Futuristic processing indicators
-- **Progress Bars**: Animated training progress
+#### **Flask-Specific Features**
+- **Bootstrap 5 Integration**: Responsive grid system
+- **Custom CSS Classes**: Cyberpunk-themed components
+- **AJAX File Upload**: Drag-and-drop with progress indicators
+- **JSON API Responses**: RESTful backend architecture
 
-#### **Responsive Design**
-- **Grid Layouts**: Adaptive column systems
-- **Mobile Optimization**: Touch-friendly interfaces
-- **Dark Theme**: Eye-friendly color scheme
-- **Typography**: Orbitron and Roboto Mono fonts
+#### **Interactive Elements**
+- **Hover Effects**: CSS transitions and transforms
+- **Loading Spinners**: Custom cyberpunk animations
+- **Real-time Updates**: JavaScript-powered live data
+- **Mobile Responsive**: Touch-friendly Bootstrap design
 
 ## 🔬 **Advanced Features**
 
@@ -388,23 +395,23 @@ def evaluate_model(model, data):
 
 ### 🗂️ **Data Flow Architecture**
 ```
-Raw Data → Preprocessing → Feature Engineering → Graph Construction → Model Training → Evaluation → Dashboard
+Raw Data → Preprocessing → Feature Engineering → Graph Construction → Model Training → Evaluation → Flask Dashboard
     ↓            ↓              ↓                    ↓                 ↓             ↓           ↓
-5 CSV files → Cleaning → BERT + Numerical → NetworkX Graph → TemporalGNN → Metrics → Streamlit UI
+5 CSV files → Cleaning → BERT + Numerical → NetworkX Graph → TemporalGNN → Metrics → Flask API + UI
 ```
 
 ### 🧪 **Model Components**
-1. **Input Layer**: 771-dimensional feature vectors
+1. **Input Layer**: 771-dimensional feature vectors (BERT + numerical)
 2. **BERT Encoder**: Pre-trained transformer for text analysis
 3. **Graph Convolution**: TransformerConv layers for relationship modeling
-4. **Temporal Attention**: Time-aware pattern recognition
+4. **TemporalGNN**: Custom architecture with 99K parameters
 5. **Output Layer**: Binary classification (fraud/normal)
 
 ### 📊 **Performance Optimization**
-- **Batch Processing**: Efficient data loading
-- **GPU Acceleration**: CUDA support for training
-- **Memory Management**: Optimized for large graphs
-- **Caching**: Preprocessed data storage
+- **Smart Data Sampling**: 50K subset for efficient training
+- **Memory Management**: Automatic GPU cache clearing
+- **CPU Optimization**: Optimized for systems without GPU
+- **Batch Processing**: Adaptive batch sizes based on hardware
 
 ## 🛠️ **Configuration**
 
@@ -412,25 +419,27 @@ Key configuration parameters in `utils/config.py`:
 
 ```python
 class Config:
-    # Model Parameters
-    HIDDEN_CHANNELS = 64
+    # Model Parameters (Optimized)
+    HIDDEN_CHANNELS = 32  # Lightweight for efficiency
     LR = 0.001
-    EPOCHS = 100
-    BATCH_SIZE = 32
+    EPOCHS = 25  # Balanced training time
+    BATCH_SIZE = 8  # Memory efficient
     
-    # Data Paths
-    FRAUD_DATA_PATH = "data/raw/Fraud_Data.csv"
-    PROCESSED_DATA_PATH = "data/processed/combined_fraud_data.csv"
+    # Hardware-Adaptive Settings
+    USE_MIXED_PRECISION = torch.cuda.is_available()
+    BERT_BATCH_SIZE = 2 if torch.cuda.is_available() else 4
+    GRADIENT_ACCUMULATION_STEPS = 4
 ```
 
 ## 📈 **Results & Outputs**
 
 Generated outputs include:
-- 📊 **metrics_report.txt**: Detailed performance metrics
+- 📊 **metrics_report.txt**: Performance metrics (90.7% accuracy)
 - 🎯 **confusion_matrix.png**: Visual confusion matrix
-- 📈 **roc_curve.png**: ROC curve visualization
+- 📈 **roc_curve.png**: ROC curve visualization  
 - 📊 **probability_distributions.png**: Fraud probability analysis
-- 🤖 **trained_model.pth**: Saved neural network model
+- 🤖 **trained_model.pth**: Saved neural network model (393KB)
+- 📈 **combined_fraud_data.csv**: Processed dataset (151K records)
 
 
 
@@ -442,5 +451,42 @@ Generated outputs include:
 ![Made with Python](https://img.shields.io/badge/Made%20with-Python-00f5ff?style=flat-square&logo=python&logoColor=white)
 ![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-ff00ff?style=flat-square&logo=brain&logoColor=white)
 ![Open Source](https://img.shields.io/badge/Open-Source-00ff00?style=flat-square&logo=github&logoColor=white)
+
+</div>
+## 🚀 **
+Quick Start Commands**
+
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Train the model (14.6 minutes)
+python main.py
+
+# 3. View results
+python view_outputs.py
+
+# 4. Launch cyberpunk dashboard
+python launch_flask_dashboard.py
+```
+
+## 📊 **Current Performance**
+- **✅ 90.7% Accuracy** on fraud detection
+- **✅ 50K Training Samples** processed efficiently  
+- **✅ 14.6 Minutes** training time on CPU
+- **✅ Flask Dashboard** with flexible CSV upload
+- **✅ Real-time Analysis** with cyberpunk UI
+
+---
+
+<div align="center">
+
+**🛡️ CYBERFRAUDNET - Advanced AI Fraud Detection 🛡️**
+
+*Built with ❤️ by the Valise Team*
+
+![Made with Python](https://img.shields.io/badge/Made%20with-Python-00f5ff?style=flat-square&logo=python&logoColor=white)
+![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-ff00ff?style=flat-square&logo=brain&logoColor=white)
+![Flask Dashboard](https://img.shields.io/badge/Flask-Dashboard-00ff00?style=flat-square&logo=flask&logoColor=white)
 
 </div>
