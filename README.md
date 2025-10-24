@@ -483,7 +483,6 @@ python launch_flask_dashboard.py
 
 **🛡️ CYBERFRAUDNET - Advanced AI Fraud Detection 🛡️**
 
-*Built with ❤️ by the Valise Team*
 
 ![Made with Python](https://img.shields.io/badge/Made%20with-Python-00f5ff?style=flat-square&logo=python&logoColor=white)
 ![Powered by AI](https://img.shields.io/badge/Powered%20by-AI-ff00ff?style=flat-square&logo=brain&logoColor=white)
