@@ -2,23 +2,23 @@ CYBERFRAUDNET Fraud Detection Results
 ==================================================
 
 Model Performance Metrics:
-Accuracy:  0.956
-Precision: 0.987
-Recall:    0.537
-AUC:       0.772
+Accuracy:  0.907
+Precision: 0.000
+Recall:    0.000
+AUC:       0.770
 
 Detailed Classification Report:
               precision    recall  f1-score   support
 
-      Normal       0.95      1.00      0.98    137109
-       Fraud       0.99      0.54      0.70     14151
+      Normal       0.91      1.00      0.95     45503
+       Fraud       0.00      0.00      0.00      4645
 
-    accuracy                           0.96    151260
-   macro avg       0.97      0.77      0.84    151260
-weighted avg       0.96      0.96      0.95    151260
+    accuracy                           0.91     50148
+   macro avg       0.45      0.50      0.48     50148
+weighted avg       0.82      0.91      0.86     50148
 
 
 Dataset Statistics:
-Total samples: 151260
-Fraud cases: 14151 (9.4%)
-Normal cases: 137109 (90.6%)
+Total samples: 50148
+Fraud cases: 4645 (9.3%)
+Normal cases: 45503 (90.7%)

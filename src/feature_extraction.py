@@ -4,24 +4,46 @@ import torch
 from tqdm import tqdm
 from utils.logger import log
 
-# Initialize BERT model for text feature extraction
+# Initialize BERT model for text feature extraction with GPU support
 try:
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
     bert_model = AutoModel.from_pretrained("bert-base-uncased")
+    bert_model = bert_model.to(device)
     BERT_AVAILABLE = True
+    log(f"🤖 BERT model loaded on {device}")
 except:
     log("⚠️ BERT model not available, using alternative text features")
     BERT_AVAILABLE = False
+    device = torch.device('cpu')
 
 def extract_text_features_bert(texts):
-    """Extract BERT embeddings from text"""
+    """Extract BERT embeddings from text using GPU acceleration"""
     text_features = []
-    for text in tqdm(texts, desc="Extracting BERT features"):
-        inputs = tokenizer(str(text), return_tensors="pt", truncation=True, padding=True, max_length=128)
+    batch_size = 32 if device.type == 'cuda' else 8  # Larger batches for GPU
+    
+    # Process in batches for better GPU utilization
+    for i in tqdm(range(0, len(texts), batch_size), desc=f"Extracting BERT features on {device}"):
+        batch_texts = texts[i:i+batch_size]
+        batch_inputs = tokenizer(
+            [str(text) for text in batch_texts], 
+            return_tensors="pt", 
+            truncation=True, 
+            padding=True, 
+            max_length=128
+        )
+        
+        # Move inputs to GPU
+        batch_inputs = {k: v.to(device) for k, v in batch_inputs.items()}
+        
         with torch.no_grad():
-            outputs = bert_model(**inputs)
-        emb = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()
-        text_features.append(emb)
+            outputs = bert_model(**batch_inputs)
+            # Get mean pooled embeddings
+            embeddings = outputs.last_hidden_state.mean(dim=1)
+            # Move back to CPU for numpy conversion
+            embeddings = embeddings.cpu().numpy()
+            text_features.extend(embeddings)
+    
     return np.array(text_features)
 
 def extract_text_features_simple(texts):

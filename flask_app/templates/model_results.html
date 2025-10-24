@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Model Results - CYBERFRAUDNET{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="cyber-header">🎯 MODEL PERFORMANCE MATRIX</h2>
+    </div>
+</div>
+
+{% if metrics %}
+<!-- Performance Metrics Cards -->
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h3 style="color: #00ff00; margin: 0;">🎯 ACCURACY</h3>
+            <h1 style="color: #ffffff; margin: 0.5rem 0; font-size: 2.5rem;">{{ metrics.accuracy }}</h1>
+            <p style="color: #00f5ff; margin: 0;">Overall Performance</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h3 style="color: #ff00ff; margin: 0;">🔍 PRECISION</h3>
+            <h1 style="color: #ffffff; margin: 0.5rem 0; font-size: 2.5rem;">{{ metrics.precision }}</h1>
+            <p style="color: #00f5ff; margin: 0;">Fraud Detection Rate</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h3 style="color: #ffff00; margin: 0;">⚡ RECALL</h3>
+            <h1 style="color: #ffffff; margin: 0.5rem 0; font-size: 2.5rem;">{{ metrics.recall }}</h1>
+            <p style="color: #00f5ff; margin: 0;">Coverage Rate</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h3 style="color: #00ffff; margin: 0;">📈 AUC</h3>
+            <h1 style="color: #ffffff; margin: 0.5rem 0; font-size: 2.5rem;">{{ metrics.auc }}</h1>
+            <p style="color: #00f5ff; margin: 0;">Model Quality</p>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Report -->
+{% if full_report %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="metric-card">
+            <h4 style="color: #ff00ff;">📋 Detailed Classification Report</h4>
+            <button class="btn btn-cyber" type="button" data-bs-toggle="collapse" data-bs-target="#reportCollapse">
+                Show/Hide Report
+            </button>
+            <div class="collapse mt-3" id="reportCollapse">
+                <pre style="color: #00f5ff; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; font-size: 0.9rem;">{{ full_report }}</pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<hr style="border-color: rgba(0, 245, 255, 0.3); margin: 2rem 0;">
+
+<!-- Visualizations -->
+<div class="row">
+    <div class="col-12">
+        <h2 class="cyber-subheader">📊 NEURAL NETWORK ANALYSIS</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="metric-card">
+            <h3 style="color: #00f5ff;">🎯 Confusion Matrix</h3>
+            {% if images['confusion_matrix.png'] %}
+                <img src="data:image/png;base64,{{ images['confusion_matrix.png'] }}" 
+                     class="img-fluid" alt="Confusion Matrix">
+            {% else %}
+                <div class="warning-card">
+                    <p style="margin: 0; color: #ffffff;">🔍 Confusion matrix visualization not found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="metric-card">
+            <h3 style="color: #ff00ff;">📈 ROC Curve</h3>
+            {% if images['roc_curve.png'] %}
+                <img src="data:image/png;base64,{{ images['roc_curve.png'] }}" 
+                     class="img-fluid" alt="ROC Curve">
+            {% else %}
+                <div class="warning-card">
+                    <p style="margin: 0; color: #ffffff;">📊 ROC curve visualization not found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="metric-card">
+            <h3 style="color: #00ff00;">🔬 Probability Distributions</h3>
+            {% if images['probability_distributions.png'] %}
+                <img src="data:image/png;base64,{{ images['probability_distributions.png'] }}" 
+                     class="img-fluid" alt="Probability Distributions">
+            {% else %}
+                <div class="warning-card">
+                    <p style="margin: 0; color: #ffffff;">📈 Probability distribution visualization not found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- No Metrics Available -->
+<div class="row">
+    <div class="col-12">
+        <div class="warning-card">
+            <h3 style="color: #ff6600; margin: 0;">⚠️ METRICS NOT FOUND</h3>
+            <p style="margin: 0.5rem 0; color: #ffffff;">Run the main pipeline first: <code>python main.py</code></p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Navigation -->
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-cyber me-3">🏠 Home</a>
+        <a href="{{ url_for('data_analysis') }}" class="btn btn-cyber me-3">📊 Data Analysis</a>
+        <a href="{{ url_for('live_prediction') }}" class="btn btn-cyber">🔍 Live Prediction</a>
+    </div>
+</div>
+{% endblock %}

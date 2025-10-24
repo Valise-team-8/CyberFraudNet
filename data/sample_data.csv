@@ -1,6 +1,0 @@
-user_id,product_id,seller_id,review_text,timestamp
-U1,P1,S1,"Good quality, fast delivery",2025-01-01
-U2,P2,S2,"Fake product, poor quality",2025-01-02
-U3,P1,S1,"Excellent experience",2025-01-03
-U4,P3,S3,"Not genuine item",2025-01-04
-U5,P2,S2,"Satisfied with product",2025-01-05

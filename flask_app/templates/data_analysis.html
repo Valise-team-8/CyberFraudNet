@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Data Analysis - CYBERFRAUDNET{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="cyber-header">📊 DATA INTELLIGENCE CENTER</h2>
+    </div>
+</div>
+
+{% if stats %}
+<!-- Dataset Overview -->
+<div class="row">
+    <div class="col-12">
+        <h3 class="cyber-subheader">🎯 DATASET OVERVIEW</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #00f5ff; margin: 0;">📊 TOTAL TRANSACTIONS</h4>
+            <h2 style="color: #ffffff; margin: 0.5rem 0;">{{ "{:,}".format(stats.total_transactions) }}</h2>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #ff0000; margin: 0;">🚨 FRAUD CASES</h4>
+            <h2 style="color: #ffffff; margin: 0.5rem 0;">{{ "{:,}".format(stats.fraud_cases) }}</h2>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #ffff00; margin: 0;">⚡ FRAUD RATE</h4>
+            <h2 style="color: #ffffff; margin: 0.5rem 0;">{{ "%.1f"|format(stats.fraud_rate) }}%</h2>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #00ff00; margin: 0;">🔬 FEATURES</h4>
+            <h2 style="color: #ffffff; margin: 0.5rem 0;">{{ stats.features }}</h2>
+        </div>
+    </div>
+</div>
+
+<hr style="border-color: rgba(0, 245, 255, 0.3); margin: 2rem 0;">
+
+<!-- Interactive Visualizations -->
+<div class="row">
+    <div class="col-12">
+        <h3 class="cyber-subheader">📈 INTERACTIVE ANALYTICS</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="metric-card">
+            <h4 style="color: #00f5ff;">🎯 Fraud Distribution</h4>
+            <div id="pieChart"></div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="metric-card">
+            <h4 style="color: #ff00ff;">💰 Purchase Value Analysis</h4>
+            <div id="histChart"></div>
+        </div>
+    </div>
+</div>
+
+<hr style="border-color: rgba(0, 245, 255, 0.3); margin: 2rem 0;">
+
+<!-- Data Sample -->
+<div class="row">
+    <div class="col-12">
+        <h3 class="cyber-subheader">🔍 DATA SAMPLE</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label" style="color: #00f5ff;">Show Fraud Cases Only:</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="fraudFilter" onchange="filterData()">
+            <label class="form-check-label" for="fraudFilter" style="color: #ffffff;">
+                🚨 Show Fraud Cases Only
+            </label>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="sampleSize" class="form-label" style="color: #00f5ff;">Sample Size:</label>
+        <input type="range" class="form-range" id="sampleSize" min="10" max="50" value="20" onchange="updateSampleSize()">
+        <span id="sampleSizeValue" style="color: #ffffff;">20</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="metric-card">
+            <div class="table-responsive">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr style="color: #00f5ff;">
+                            {% if sample_data %}
+                                {% for key in sample_data[0].keys() %}
+                                <th>{{ key }}</th>
+                                {% endfor %}
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                        {% for row in sample_data[:20] %}
+                        <tr class="data-row" data-fraud="{{ row.is_fraud }}">
+                            {% for value in row.values() %}
+                            <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- No Data Available -->
+<div class="row">
+    <div class="col-12">
+        <div class="warning-card">
+            <h3 style="color: #ff6600; margin: 0;">⚠️ DATASET NOT FOUND</h3>
+            <p style="margin: 0.5rem 0; color: #ffffff;">Run the main pipeline first: <code>python main.py</code></p>
+            <p style="margin: 0.5rem 0; color: #00f5ff;">Expected location: data/processed/combined_fraud_data.csv</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Navigation -->
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-cyber me-3">🏠 Home</a>
+        <a href="{{ url_for('model_results') }}" class="btn btn-cyber me-3">🎯 Model Results</a>
+        <a href="{{ url_for('live_prediction') }}" class="btn btn-cyber">🔍 Live Prediction</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if stats %}
+<script>
+    // Render Plotly charts
+    var pieData = {{ pie_chart|safe }};
+    var histData = {{ hist_chart|safe }};
+    
+    Plotly.newPlot('pieChart', pieData.data, pieData.layout, {responsive: true});
+    Plotly.newPlot('histChart', histData.data, histData.layout, {responsive: true});
+    
+    // Filter functionality
+    function filterData() {
+        const showFraudOnly = document.getElementById('fraudFilter').checked;
+        const rows = document.querySelectorAll('.data-row');
+        
+        rows.forEach(row => {
+            const isFraud = row.getAttribute('data-fraud') === '1';
+            if (showFraudOnly && !isFraud) {
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        });
+    }
+    
+    function updateSampleSize() {
+        const size = document.getElementById('sampleSize').value;
+        document.getElementById('sampleSizeValue').textContent = size;
+        
+        const rows = document.querySelectorAll('.data-row');
+        rows.forEach((row, index) => {
+            if (index >= size) {
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        });
+        
+        // Re-apply fraud filter if active
+        filterData();
+    }
+</script>
+{% endif %}
+{% endblock %}

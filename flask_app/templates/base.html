@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CYBERFRAUDNET{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <style>
+        /* Cyberpunk Styling */
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .cyber-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .cyber-subtitle {
+            font-size: 1.2rem;
+            color: #00f5ff;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'Roboto Mono', monospace;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 0.5rem;
+            box-shadow: 0 8px 32px rgba(0, 245, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 245, 255, 0.2);
+        }
+        
+        .status-card {
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, rgba(0, 245, 255, 0.1) 100%);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 16px rgba(0, 255, 0, 0.1);
+        }
+        
+        .warning-card {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 0, 0, 0.1) 100%);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 16px rgba(255, 165, 0, 0.1);
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.3);
+        }
+        
+        .navbar-brand {
+            color: #00f5ff !important;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        }
+        
+        .nav-link {
+            color: #ffffff !important;
+            font-family: 'Roboto Mono', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #00f5ff !important;
+            text-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
+        }
+        
+        .nav-link.active {
+            color: #ff00ff !important;
+            text-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+        }
+        
+        .btn-cyber {
+            background: linear-gradient(45deg, #00f5ff, #ff00ff);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 245, 255, 0.3);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .btn-cyber:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 245, 255, 0.5);
+            color: white;
+        }
+        
+        .cyber-header {
+            font-size: 2rem;
+            color: #00f5ff;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .cyber-subheader {
+            font-size: 1.5rem;
+            color: #ff00ff;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .table-dark {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(0, 245, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 245, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: rgba(0, 245, 255, 0.6);
+            background: rgba(0, 245, 255, 0.1);
+        }
+        
+        .form-control {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            color: #ffffff;
+            border-radius: 10px;
+        }
+        
+        .form-control:focus {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #00f5ff;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+        }
+        
+        .container-fluid {
+            padding: 2rem;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            border-right: 1px solid rgba(0, 245, 255, 0.3);
+        }
+        
+        .main-content {
+            padding: 2rem;
+        }
+        
+        /* Loading spinner */
+        .spinner-cyber {
+            border: 4px solid rgba(0, 245, 255, 0.3);
+            border-top: 4px solid #00f5ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .cyber-title {
+                font-size: 2.5rem;
+            }
+            
+            .metric-card {
+                margin: 0.25rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                🛡️ CYBERFRAUDNET
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('model_results') }}">🎯 Model Results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('data_analysis') }}">📊 Data Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('live_prediction') }}">🔍 Live Prediction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('system_status') }}">⚙️ System Status</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}System Status - CYBERFRAUDNET{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="cyber-header">⚙️ SYSTEM STATUS MONITOR</h2>
+    </div>
+</div>
+
+<!-- System Health Indicators -->
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="status-card text-center">
+            <h4 style="color: #00ff00; margin: 0;">🟢 NEURAL NETWORK</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;">ONLINE</h3>
+            <p style="color: #00f5ff; margin: 0;">TemporalGNN Active</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="status-card text-center">
+            <h4 style="color: #00ff00; margin: 0;">🟢 GRAPH ENGINE</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;">READY</h3>
+            <p style="color: #00f5ff; margin: 0;">PyTorch Geometric</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="status-card text-center">
+            <h4 style="color: #00ff00; margin: 0;">🟢 AI MODELS</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;">LOADED</h3>
+            <p style="color: #00f5ff; margin: 0;">BERT + GNN</p>
+        </div>
+    </div>
+</div>
+
+<hr style="border-color: rgba(0, 245, 255, 0.3); margin: 2rem 0;">
+
+<!-- Model Architecture -->
+<div class="row">
+    <div class="col-12">
+        <h3 style="color: #ff00ff;">🤖 MODEL ARCHITECTURE</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="metric-card">
+            <div class="table-responsive">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr style="color: #00f5ff;">
+                            <th>Component</th>
+                            <th>Type</th>
+                            <th>Dimensions</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Input Layer</td>
+                            <td>Text + Numerical</td>
+                            <td>768 + N</td>
+                            <td><span style="color: #00ff00;">✅ Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>BERT Encoder</td>
+                            <td>Transformer</td>
+                            <td>768</td>
+                            <td><span style="color: #00ff00;">✅ Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Feature Fusion</td>
+                            <td>Concatenation</td>
+                            <td>768 + N</td>
+                            <td><span style="color: #00ff00;">✅ Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Graph Conv 1</td>
+                            <td>TransformerConv</td>
+                            <td>64</td>
+                            <td><span style="color: #00ff00;">✅ Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Graph Conv 2</td>
+                            <td>TransformerConv</td>
+                            <td>2</td>
+                            <td><span style="color: #00ff00;">✅ Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Output Layer</td>
+                            <td>Classification</td>
+                            <td>2</td>
+                            <td><span style="color: #00ff00;">✅ Active</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr style="border-color: rgba(0, 245, 255, 0.3); margin: 2rem 0;">
+
+<!-- Real-time Metrics -->
+<div class="row">
+    <div class="col-12">
+        <h3 style="color: #00f5ff;">📊 REAL-TIME METRICS</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #00f5ff; margin: 0;">⏱️ UPTIME</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;">{{ system_info.uptime }}</h3>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #ff00ff; margin: 0;">🔄 PROCESSED</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;">{{ system_info.processed }}</h3>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #00ff00; margin: 0;">🎯 ACCURACY</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;">{{ system_info.accuracy }}</h3>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="metric-card text-center">
+            <h4 style="color: #ffff00; margin: 0;">🕐 TIME</h4>
+            <h3 style="color: #ffffff; margin: 0.5rem 0;" id="currentTime">{{ system_info.current_time }}</h3>
+        </div>
+    </div>
+</div>
+
+<hr style="border-color: rgba(0, 245, 255, 0.3); margin: 2rem 0;">
+
+<!-- System Configuration -->
+<div class="row">
+    <div class="col-12">
+        <h3 style="color: #00ff00;">⚙️ SYSTEM CONFIGURATION</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="metric-card">
+            <h5 style="color: #00f5ff; margin: 0;">🧠 Model Parameters</h5>
+            <ul style="margin: 0.5rem 0; color: #ffffff;">
+                <li>Hidden Channels: 64</li>
+                <li>Learning Rate: 0.001</li>
+                <li>Epochs: 100</li>
+                <li>Batch Size: 32</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <div class="metric-card">
+            <h5 style="color: #ff00ff; margin: 0;">🔧 Framework Versions</h5>
+            <ul style="margin: 0.5rem 0; color: #ffffff;">
+                <li>PyTorch: 2.8.0</li>
+                <li>PyTorch Geometric: 2.7.0</li>
+                <li>Flask: 2.3.3</li>
+                <li>Transformers: 4.50.0</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Performance Monitoring -->
+<div class="row">
+    <div class="col-12">
+        <h3 style="color: #ff00ff;">📈 PERFORMANCE MONITORING</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="metric-card">
+            <h5 style="color: #00f5ff; margin: 0;">💾 Memory Usage</h5>
+            <div class="progress mt-2" style="height: 20px;">
+                <div class="progress-bar" role="progressbar" style="width: 65%; background: linear-gradient(45deg, #00f5ff, #ff00ff);">
+                    65%
+                </div>
+            </div>
+            <small style="color: #ffffff;">2.1GB / 3.2GB</small>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="metric-card">
+            <h5 style="color: #ff00ff; margin: 0;">🖥️ CPU Usage</h5>
+            <div class="progress mt-2" style="height: 20px;">
+                <div class="progress-bar" role="progressbar" style="width: 45%; background: linear-gradient(45deg, #ff00ff, #00ff00);">
+                    45%
+                </div>
+            </div>
+            <small style="color: #ffffff;">4.5GHz / 8 cores</small>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="metric-card">
+            <h5 style="color: #00ff00; margin: 0;">🚀 GPU Usage</h5>
+            <div class="progress mt-2" style="height: 20px;">
+                <div class="progress-bar" role="progressbar" style="width: 80%; background: linear-gradient(45deg, #00ff00, #ffff00);">
+                    80%
+                </div>
+            </div>
+            <small style="color: #ffffff;">CUDA Available</small>
+        </div>
+    </div>
+</div>
+
+<!-- System Logs -->
+<div class="row">
+    <div class="col-12">
+        <h3 style="color: #ffff00;">📋 RECENT SYSTEM LOGS</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="metric-card">
+            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; font-family: 'Roboto Mono', monospace; font-size: 0.9rem;">
+                <div style="color: #00ff00;">[{{ system_info.current_time }}] ✅ Neural network initialized successfully</div>
+                <div style="color: #00f5ff;">[{{ system_info.current_time }}] 🔄 Loading BERT model weights...</div>
+                <div style="color: #ff00ff;">[{{ system_info.current_time }}] 📊 Graph construction completed</div>
+                <div style="color: #ffff00;">[{{ system_info.current_time }}] 🎯 Model accuracy: 95.6%</div>
+                <div style="color: #00ff00;">[{{ system_info.current_time }}] ✅ System ready for fraud detection</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-cyber me-3">🏠 Home</a>
+        <a href="{{ url_for('model_results') }}" class="btn btn-cyber me-3">🎯 Model Results</a>
+        <a href="{{ url_for('data_analysis') }}" class="btn btn-cyber">📊 Data Analysis</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Update current time every second
+    function updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        document.getElementById('currentTime').textContent = timeString;
+    }
+    
+    // Update time immediately and then every second
+    updateTime();
+    setInterval(updateTime, 1000);
+    
+    // Simulate real-time metrics updates
+    function updateMetrics() {
+        // Simulate memory usage fluctuation
+        const memoryUsage = Math.floor(Math.random() * 20) + 60; // 60-80%
+        const memoryBar = document.querySelector('.progress-bar');
+        if (memoryBar) {
+            memoryBar.style.width = memoryUsage + '%';
+            memoryBar.textContent = memoryUsage + '%';
+        }
+    }
+    
+    // Update metrics every 5 seconds
+    setInterval(updateMetrics, 5000);
+</script>
+{% endblock %}

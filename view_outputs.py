@@ -1,62 +1,43 @@
 #!/usr/bin/env python3
 """
-Simple script to view CYBERFRAUDNET outputs
+View CYBERFRAUDNET Results
 """
 import os
 import pandas as pd
-from PIL import Image
-import matplotlib.pyplot as plt
 
 def main():
-    print("🛡️ CYBERFRAUDNET - Fraud Detection Results")
-    print("=" * 50)
+    print("🛡️ CYBERFRAUDNET - Results Summary")
+    print("=" * 40)
     
-    # Check if outputs exist
-    outputs_dir = "outputs"
-    if not os.path.exists(outputs_dir):
-        print("❌ No outputs directory found. Run main.py first.")
+    # Check outputs
+    if not os.path.exists("outputs"):
+        print("❌ Run python main.py first")
         return
     
-    # Display metrics report
-    metrics_file = os.path.join(outputs_dir, "metrics_report.txt")
+    # Show metrics
+    metrics_file = "outputs/metrics_report.txt"
     if os.path.exists(metrics_file):
-        print("\n📊 MODEL PERFORMANCE METRICS:")
-        print("-" * 30)
+        print("📊 PERFORMANCE:")
         with open(metrics_file, 'r') as f:
-            print(f.read())
-    else:
-        print("❌ Metrics report not found.")
+            lines = f.readlines()
+            for line in lines[3:7]:  # Just the key metrics
+                if ":" in line:
+                    print(f"   {line.strip()}")
     
-    # List all output files
-    print("\n📁 GENERATED OUTPUT FILES:")
-    print("-" * 30)
-    for file in os.listdir(outputs_dir):
-        if os.path.isfile(os.path.join(outputs_dir, file)):
-            file_path = os.path.join(outputs_dir, file)
-            file_size = os.path.getsize(file_path)
-            print(f"✅ {file} ({file_size:,} bytes)")
+    # Show files
+    print(f"\n📁 OUTPUTS:")
+    for file in os.listdir("outputs"):
+        if file.endswith(('.png', '.txt', '.pth')):
+            size = os.path.getsize(f"outputs/{file}") / 1024
+            print(f"   ✅ {file} ({size:.0f}KB)")
     
-    # Display processed data info
-    processed_data = "data/processed/combined_fraud_data.csv"
-    if os.path.exists(processed_data):
-        print(f"\n📈 PROCESSED DATASET:")
-        print("-" * 30)
-        df = pd.read_csv(processed_data)
-        print(f"✅ Dataset shape: {df.shape}")
-        print(f"✅ Fraud cases: {df['is_fraud'].sum():,} ({df['is_fraud'].mean()*100:.1f}%)")
-        print(f"✅ Columns: {list(df.columns)}")
-    else:
-        print("❌ Processed data not found.")
+    # Show data
+    if os.path.exists("data/processed/combined_fraud_data.csv"):
+        df = pd.read_csv("data/processed/combined_fraud_data.csv")
+        fraud_rate = df['is_fraud'].mean() * 100
+        print(f"\n📈 DATASET: {len(df):,} samples, {fraud_rate:.1f}% fraud")
     
-    print(f"\n🎯 HOW TO VIEW VISUALIZATIONS:")
-    print("-" * 30)
-    print("1. Open the PNG files in outputs/ directory with any image viewer")
-    print("2. Run: python -m streamlit run demo_app/app.py (for interactive dashboard)")
-    print("3. Files are located at:")
-    for file in ["confusion_matrix.png", "roc_curve.png", "probability_distributions.png"]:
-        file_path = os.path.join(outputs_dir, file)
-        if os.path.exists(file_path):
-            print(f"   📊 {os.path.abspath(file_path)}")
+    print(f"\n🌐 DASHBOARD: python launch_flask_dashboard.py")
 
 if __name__ == "__main__":
     main()

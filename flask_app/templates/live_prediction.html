@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}Live Prediction - CYBERFRAUDNET{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="cyber-header">🔍 LIVE THREAT DETECTION</h2>
+        <p style="color: #00f5ff; font-size: 1.1rem;">Upload transaction data for real-time AI-powered fraud analysis</p>
+    </div>
+</div>
+
+<!-- File Upload Section -->
+<div class="row">
+    <div class="col-12">
+        <h3 style="color: #ff00ff;">📁 DATA UPLOAD PORTAL</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="metric-card">
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #00f5ff; margin-bottom: 1rem;"></i>
+                <h4 style="color: #00f5ff;">🚀 Upload Transaction CSV File</h4>
+                <p style="color: #ffffff;">Drag and drop your CSV file here or click to browse</p>
+                <input type="file" id="csvFile" accept=".csv" style="display: none;">
+                <button class="btn btn-cyber" onclick="document.getElementById('csvFile').click()">
+                    📁 Choose File
+                </button>
+            </div>
+            
+            <div id="uploadProgress" style="display: none; margin-top: 1rem;">
+                <div class="spinner-cyber"></div>
+                <p style="color: #00f5ff; text-align: center; margin-top: 1rem;">🔄 Analyzing data with AI neural networks...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Section -->
+<div id="resultsSection" style="display: none;">
+    <!-- File Statistics -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="status-card">
+                <h4 style="color: #00ff00; margin: 0;">✅ DATA UPLOAD SUCCESSFUL</h4>
+                <p style="margin: 0.5rem 0; color: #ffffff;">File processed and ready for analysis</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" id="fileStats">
+        <!-- Stats will be populated by JavaScript -->
+    </div>
+    
+    <!-- Column Mapping Info -->
+    <div class="row mt-3" id="columnMapping" style="display: none;">
+        <div class="col-12">
+            <div class="status-card">
+                <h5 style="color: #00f5ff; margin: 0;">🔗 Column Mapping</h5>
+                <p style="color: #ffffff; margin: 0.5rem 0;">Automatically mapped your columns:</p>
+                <div id="mappingDetails"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Network Analysis -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3 style="color: #ff00ff;">🕸️ NETWORK TOPOLOGY ANALYSIS</h3>
+        </div>
+    </div>
+    
+    <div class="row" id="networkStats">
+        <!-- Network stats will be populated by JavaScript -->
+    </div>
+    
+    <!-- AI Analysis Results -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3 style="color: #00ff00;">🤖 AI FRAUD ANALYSIS</h3>
+        </div>
+    </div>
+    
+    <div class="row" id="fraudAnalysis">
+        <!-- Fraud analysis will be populated by JavaScript -->
+    </div>
+    
+    <!-- Data Preview -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3 style="color: #00f5ff;">🔍 DATA PREVIEW</h3>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="metric-card">
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped">
+                        <thead id="dataTableHead">
+                            <!-- Headers will be populated by JavaScript -->
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Example Data Format -->
+<div class="row mt-4">
+    <div class="col-12">
+        <h3 style="color: #ff00ff;">📋 EXPECTED DATA FORMAT</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="metric-card">
+            <p style="color: #00f5ff; margin-bottom: 1rem;">
+                📝 <strong>Flexible Format:</strong> Upload any CSV file! The system will automatically detect and map columns.
+            </p>
+            
+            <div class="table-responsive">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr style="color: #00f5ff;">
+                            <th>Accepted Column Types</th>
+                            <th>Examples</th>
+                            <th>Auto-Generated if Missing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: #00ff00;">User/Customer ID</td>
+                            <td>user_id, customer_id, account_id, client_id</td>
+                            <td>✅ Yes</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #ff00ff;">Product/Item ID</td>
+                            <td>product_id, item_id, sku, goods_id</td>
+                            <td>✅ Yes</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #ffff00;">Seller/Merchant ID</td>
+                            <td>seller_id, merchant_id, vendor_id, shop_id</td>
+                            <td>✅ Yes</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #00f5ff;">Any Other Columns</td>
+                            <td>amount, description, timestamp, etc.</td>
+                            <td>➖ Preserved as-is</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-3 p-3" style="background: rgba(0, 255, 0, 0.1); border-radius: 10px; border: 1px solid rgba(0, 255, 0, 0.3);">
+                <h6 style="color: #00ff00; margin: 0;">💡 Pro Tip:</h6>
+                <p style="color: #ffffff; margin: 0.5rem 0;">
+                    Just upload your CSV file - no need to rename columns! The AI will automatically understand your data structure.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-cyber me-3">🏠 Home</a>
+        <a href="{{ url_for('model_results') }}" class="btn btn-cyber me-3">🎯 Model Results</a>
+        <a href="{{ url_for('data_analysis') }}" class="btn btn-cyber">📊 Data Analysis</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // File upload handling
+    document.getElementById('csvFile').addEventListener('change', handleFileUpload);
+    
+    // Drag and drop functionality
+    const uploadArea = document.getElementById('uploadArea');
+    
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'rgba(0, 245, 255, 0.6)';
+        uploadArea.style.background = 'rgba(0, 245, 255, 0.1)';
+    });
+    
+    uploadArea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'rgba(0, 245, 255, 0.3)';
+        uploadArea.style.background = 'rgba(0, 245, 255, 0.05)';
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'rgba(0, 245, 255, 0.3)';
+        uploadArea.style.background = 'rgba(0, 245, 255, 0.05)';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            document.getElementById('csvFile').files = files;
+            handleFileUpload();
+        }
+    });
+    
+    function handleFileUpload() {
+        const fileInput = document.getElementById('csvFile');
+        const file = fileInput.files[0];
+        
+        if (!file) return;
+        
+        if (!file.name.endsWith('.csv')) {
+            alert('Please upload a CSV file.');
+            return;
+        }
+        
+        // Show progress
+        document.getElementById('uploadProgress').style.display = 'block';
+        document.getElementById('resultsSection').style.display = 'none';
+        
+        // Create FormData
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // Upload file
+        fetch('/upload-csv', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('uploadProgress').style.display = 'none';
+            
+            if (data.success) {
+                displayResults(data);
+            } else {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            document.getElementById('uploadProgress').style.display = 'none';
+            alert('Upload failed: ' + error.message);
+        });
+    }
+    
+    function displayResults(data) {
+        document.getElementById('resultsSection').style.display = 'block';
+        
+        // File statistics
+        const fileStatsHtml = `
+            <div class="col-md-4 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #00f5ff; margin: 0;">📊 RECORDS</h4>
+                    <h2 style="color: #ffffff; margin: 0.5rem 0;">${data.stats.records.toLocaleString()}</h2>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #ff00ff; margin: 0;">🔬 COLUMNS</h4>
+                    <h2 style="color: #ffffff; margin: 0.5rem 0;">${data.stats.columns}</h2>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #00ff00; margin: 0;">💾 SIZE</h4>
+                    <h2 style="color: #ffffff; margin: 0.5rem 0;">${data.stats.size_kb}KB</h2>
+                </div>
+            </div>
+        `;
+        document.getElementById('fileStats').innerHTML = fileStatsHtml;
+        
+        // Show column mapping if available
+        if (data.stats.column_mapping) {
+            document.getElementById('columnMapping').style.display = 'block';
+            let mappingHtml = '<ul style="color: #00f5ff; margin: 0;">';
+            for (const [standard, original] of Object.entries(data.stats.column_mapping)) {
+                if (standard !== original) {
+                    mappingHtml += `<li>"${original}" → "${standard}"</li>`;
+                } else {
+                    mappingHtml += `<li>"${standard}" (auto-generated)</li>`;
+                }
+            }
+            mappingHtml += '</ul>';
+            document.getElementById('mappingDetails').innerHTML = mappingHtml;
+        }
+        
+        // Network statistics
+        const networkStatsHtml = `
+            <div class="col-md-3 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #00f5ff; margin: 0;">🔗 NODES</h4>
+                    <h3 style="color: #ffffff; margin: 0.5rem 0;">${data.network_stats.nodes}</h3>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #ff00ff; margin: 0;">🌐 EDGES</h4>
+                    <h3 style="color: #ffffff; margin: 0.5rem 0;">${data.network_stats.edges}</h3>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #00ff00; margin: 0;">📊 DENSITY</h4>
+                    <h3 style="color: #ffffff; margin: 0.5rem 0;">${data.network_stats.density}</h3>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="metric-card text-center">
+                    <h4 style="color: #ffff00; margin: 0;">🔍 COMPONENTS</h4>
+                    <h3 style="color: #ffffff; margin: 0.5rem 0;">${data.network_stats.components}</h3>
+                </div>
+            </div>
+        `;
+        document.getElementById('networkStats').innerHTML = networkStatsHtml;
+        
+        // Fraud analysis
+        const fraudAnalysisHtml = `
+            <div class="col-md-6 mb-3">
+                <div class="metric-card text-center">
+                    <h3 style="color: ${data.fraud_analysis.risk_color}; margin: 0;">${data.fraud_analysis.risk_icon} THREAT LEVEL</h3>
+                    <h2 style="color: #ffffff; margin: 0.5rem 0;">${data.fraud_analysis.risk_level}</h2>
+                    <p style="color: #00f5ff; margin: 0;">Fraud Probability: ${(data.fraud_analysis.probability * 100).toFixed(1)}%</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="metric-card text-center">
+                    <h3 style="color: #ff00ff; margin: 0;">📊 RISK SCORE</h3>
+                    <h2 style="color: #ffffff; margin: 0.5rem 0;">${data.fraud_analysis.risk_score}/100</h2>
+                    <p style="color: #00f5ff; margin: 0;">AI Confidence Level</p>
+                </div>
+            </div>
+        `;
+        document.getElementById('fraudAnalysis').innerHTML = fraudAnalysisHtml;
+        
+        // Data preview
+        if (data.sample_data && data.sample_data.length > 0) {
+            const headers = Object.keys(data.sample_data[0]);
+            const headerHtml = '<tr style="color: #00f5ff;">' + 
+                headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+            document.getElementById('dataTableHead').innerHTML = headerHtml;
+            
+            const rowsHtml = data.sample_data.map(row => 
+                '<tr>' + headers.map(h => `<td>${row[h]}</td>`).join('') + '</tr>'
+            ).join('');
+            document.getElementById('dataTableBody').innerHTML = rowsHtml;
+        }
+        
+        // Scroll to results
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+{% endblock %}
