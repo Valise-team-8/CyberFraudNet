@@ -139,29 +139,96 @@ The system processes multiple real-world fraud datasets:
 
 ## 🎨 **Dashboard Features**
 
-### 🎯 **Model Results**
-- Real-time performance metrics
-- Interactive confusion matrix
-- ROC curve analysis
-- Probability distributions
+### 🎯 **Model Results Page**
+```python
+# Performance Metrics Display
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.markdown(f"""
+    <div class="metric-card">
+        <h3 style="color: #00ff00;">🎯 ACCURACY</h3>
+        <h1 style="color: #ffffff;">{accuracy}</h1>
+    </div>
+    """, unsafe_allow_html=True)
+```
+- **Futuristic Metric Cards**: Neon-styled performance indicators
+- **Interactive Confusion Matrix**: Clickable heatmap visualization
+- **ROC Curve Analysis**: Dynamic performance curve
+- **Probability Distributions**: Fraud vs normal pattern analysis
 
-### 📊 **Data Analysis**
-- Dataset statistics and insights
-- Interactive fraud distribution charts
-- Purchase value analysis
-- Age demographic patterns
+### 📊 **Data Analysis Page**
+```python
+# Interactive Plotly Visualizations
+fig = go.Figure(data=[go.Pie(
+    labels=['Normal', 'Fraud'],
+    values=fraud_counts.values,
+    hole=0.4,
+    marker_colors=['#00f5ff', '#ff0000']
+)])
+st.plotly_chart(fig, use_container_width=True)
+```
+- **Dataset Statistics**: Real-time data insights
+- **Interactive Charts**: Plotly-powered visualizations
+- **Fraud Distribution**: Pie charts and histograms
+- **Purchase Analysis**: Value distribution by fraud status
+- **Age Demographics**: Box plots and statistical analysis
 
-### 🔍 **Live Prediction**
-- Upload CSV for instant analysis
-- Network topology visualization
-- AI-powered risk assessment
-- Real-time fraud scoring
+### 🔍 **Live Prediction Page**
+```python
+# Network Analysis
+G = nx.Graph()
+for _, row in sample_df.iterrows():
+    user = f"U_{row['user_id']}"
+    product = f"P_{row['product_id']}"
+    seller = f"S_{row['seller_id']}"
+    G.add_edge(user, product)
+    G.add_edge(product, seller)
 
-### ⚙️ **System Status**
-- Neural network health monitoring
-- Model architecture overview
-- Real-time performance metrics
-- System uptime tracking
+# AI Risk Assessment
+if st.button("🔍 Run AI Fraud Detection"):
+    fraud_probability = model.predict(features)
+    risk_score = calculate_risk_score(fraud_probability)
+```
+- **CSV Upload Portal**: Drag-and-drop file analysis
+- **Network Topology**: Interactive graph visualization
+- **AI Risk Assessment**: Real-time fraud probability calculation
+- **Transaction Mapping**: User-Product-Seller relationship analysis
+
+### ⚙️ **System Status Page**
+```python
+# Real-time System Monitoring
+st.markdown(f"""
+<div class="status-card">
+    <h4 style="color: #00ff00;">🟢 NEURAL NETWORK</h4>
+    <h3 style="color: #ffffff;">ONLINE</h3>
+    <p style="color: #00f5ff;">TemporalGNN Active</p>
+</div>
+""", unsafe_allow_html=True)
+```
+- **System Health**: Neural network status monitoring
+- **Model Architecture**: Component overview and status
+- **Performance Metrics**: Real-time processing statistics
+- **Uptime Tracking**: System availability monitoring
+
+### 🎨 **UI Components Showcase**
+
+#### **Cyberpunk Styling**
+- **Neon Color Palette**: Cyan (#00f5ff), Magenta (#ff00ff), Green (#00ff00)
+- **Gradient Backgrounds**: Dynamic color transitions
+- **Glass Morphism**: Translucent cards with backdrop blur
+- **Animated Elements**: Pulsing indicators and smooth transitions
+
+#### **Interactive Elements**
+- **Hover Effects**: Dynamic color changes and shadows
+- **Click Animations**: Button press feedback
+- **Loading Spinners**: Futuristic processing indicators
+- **Progress Bars**: Animated training progress
+
+#### **Responsive Design**
+- **Grid Layouts**: Adaptive column systems
+- **Mobile Optimization**: Touch-friendly interfaces
+- **Dark Theme**: Eye-friendly color scheme
+- **Typography**: Orbitron and Roboto Mono fonts
 
 ## 🔬 **Advanced Features**
 
@@ -182,6 +249,162 @@ The system processes multiple real-world fraud datasets:
 - **Edge Analysis**: Critical relationships
 - **Feature Attribution**: Most influential factors
 - **Decision Transparency**: Interpretable predictions
+
+## 🎨 **UI Implementation Details**
+
+### 🌟 **Cyberpunk Design System**
+The dashboard features a cutting-edge cyberpunk aesthetic with:
+
+```css
+/* Custom CSS Styling */
+.cyber-title {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, #00f5ff, #ff00ff, #00ff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+}
+
+.metric-card {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 245, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+```
+
+### 🎛️ **Interactive Components**
+- **Real-time Metrics**: Live updating performance indicators
+- **Interactive Charts**: Plotly-powered visualizations with hover effects
+- **Network Graphs**: Dynamic transaction relationship mapping
+- **File Upload**: Drag-and-drop CSV analysis
+- **Animated Elements**: Pulsing status indicators and smooth transitions
+
+### 📱 **Responsive Design**
+- **Multi-column Layouts**: Adaptive grid system
+- **Mobile Friendly**: Responsive breakpoints
+- **Dark Theme**: Optimized for extended use
+- **Accessibility**: Screen reader compatible
+
+## 🚀 **Training Implementation**
+
+### 📊 **Data Preprocessing Pipeline**
+```python
+def preprocess_data():
+    # 1. Load multiple datasets
+    fraud_df = preprocess_fraud_data()          # Main fraud dataset
+    customer_df = preprocess_customer_data()    # Customer profiles
+    transaction_df = preprocess_transaction_data() # Transaction details
+    financial_df = preprocess_financial_anomaly_data() # Anomaly patterns
+    
+    # 2. Feature engineering
+    - IP geolocation mapping
+    - Temporal feature extraction
+    - Categorical encoding
+    - Text preprocessing for BERT
+    
+    # 3. Graph construction
+    - User-Product-Seller relationships
+    - Temporal edge weights
+    - Node feature assignment
+```
+
+### 🧠 **Model Architecture**
+```python
+class TemporalGNN(nn.Module):
+    def __init__(self, in_channels, hidden_channels, out_channels):
+        super().__init__()
+        self.conv1 = TransformerConv(in_channels, hidden_channels)
+        self.conv2 = TransformerConv(hidden_channels, out_channels)
+
+    def forward(self, x, edge_index):
+        x = self.conv1(x, edge_index).relu()
+        x = self.conv2(x, edge_index)
+        return x
+```
+
+### 🎯 **Training Process**
+```python
+# Training Configuration
+EPOCHS = 100
+LEARNING_RATE = 0.001
+HIDDEN_CHANNELS = 64
+BATCH_SIZE = 32
+
+# Training Loop
+for epoch in range(epochs):
+    model.train()
+    optimizer.zero_grad()
+    
+    # Forward pass through GNN
+    out = model(data.x, data.edge_index)
+    
+    # Calculate loss on training nodes
+    loss = criterion(out[train_mask], labels[train_mask])
+    
+    # Backward pass and optimization
+    loss.backward()
+    optimizer.step()
+    
+    # Validation
+    model.eval()
+    with torch.no_grad():
+        val_out = out[test_mask]
+        val_acc = accuracy(val_out, labels[test_mask])
+```
+
+### 🔄 **Feature Extraction Details**
+```python
+def extract_features(df):
+    # 1. BERT Text Features (768 dimensions)
+    text_features = extract_text_features_bert(df['review_text'])
+    
+    # 2. Numerical Features
+    numerical_features = extract_numerical_features(df)
+    
+    # 3. Feature Fusion
+    combined_features = np.concatenate([text_features, numerical_features], axis=1)
+    
+    return combined_features  # Shape: (N, 771)
+```
+
+### 📈 **Evaluation Metrics**
+```python
+def evaluate_model(model, data):
+    # Performance Metrics
+    accuracy = accuracy_score(true_labels, predictions)
+    precision = precision_score(true_labels, predictions)
+    recall = recall_score(true_labels, predictions)
+    auc = roc_auc_score(true_labels, probabilities)
+    
+    # Visualizations
+    save_confusion_matrix(true_labels, predictions)
+    save_roc_curve(true_labels, probabilities)
+    save_probability_distributions(true_labels, probabilities)
+```
+
+## 🔧 **Technical Implementation**
+
+### 🗂️ **Data Flow Architecture**
+```
+Raw Data → Preprocessing → Feature Engineering → Graph Construction → Model Training → Evaluation → Dashboard
+    ↓            ↓              ↓                    ↓                 ↓             ↓           ↓
+5 CSV files → Cleaning → BERT + Numerical → NetworkX Graph → TemporalGNN → Metrics → Streamlit UI
+```
+
+### 🧪 **Model Components**
+1. **Input Layer**: 771-dimensional feature vectors
+2. **BERT Encoder**: Pre-trained transformer for text analysis
+3. **Graph Convolution**: TransformerConv layers for relationship modeling
+4. **Temporal Attention**: Time-aware pattern recognition
+5. **Output Layer**: Binary classification (fraud/normal)
+
+### 📊 **Performance Optimization**
+- **Batch Processing**: Efficient data loading
+- **GPU Acceleration**: CUDA support for training
+- **Memory Management**: Optimized for large graphs
+- **Caching**: Preprocessed data storage
 
 ## 🛠️ **Configuration**
 
@@ -209,48 +432,7 @@ Generated outputs include:
 - 📊 **probability_distributions.png**: Fraud probability analysis
 - 🤖 **trained_model.pth**: Saved neural network model
 
-## 🚀 **Deployment**
 
-### 🐳 **Docker Support** (Coming Soon)
-```bash
-docker build -t cyberfraudnet .
-docker run -p 8501:8501 cyberfraudnet
-```
-
-### ☁️ **Cloud Deployment**
-- AWS/GCP/Azure compatible
-- Scalable architecture
-- API endpoints available
-- Real-time processing
-
-## 🤝 **Contributing**
-
-We welcome contributions! Please see our contributing guidelines:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests and documentation
-5. Submit a pull request
-
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 **Acknowledgments**
-
-- **PyTorch Team** for the deep learning framework
-- **Hugging Face** for BERT transformers
-- **Streamlit** for the dashboard framework
-- **Research Community** for fraud detection methodologies
-
-## 📞 **Contact**
-
-For questions, issues, or collaborations:
-
-- 📧 **Email**: [team@cyberfraudnet.ai](mailto:team@cyberfraudnet.ai)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/Valise-team-8/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/Valise-team-8/discussions)
 
 ---
 
